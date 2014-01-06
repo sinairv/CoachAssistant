@@ -1,0 +1,26 @@
+Coach Assistant
+Version 2.1
+Copyright (C) 2004-2006 Sina Iravanian  <sina.iravanian@gmail.com>
+
+Coach assistant is a tool for creating positioning patterns and visualizing them 
+for a team of coachable players. It can also serve as a tool for visual analysis 
+of the players and their relative positions. It generates Coach Language 
+(CLang for short) statements for the strategy assigned to the team. The generated 
+CLang may need little modification to form a complete team's strategy.
+
+
+Requirements
+------------
+You need Java 1.5 to make and run the application.
+
+
+You can get the most recent version of the project from:
+https://github.com/sinairv/CoachAssistant
+
+There is a short tutorial in the  doc  folder of this package.
+Also you can find the most recent, and updated version of the tutorial here:
+http://www.sinairv.com/coachassistant/catut.html
+
+
+Please feel free to report bugs and bug-fixes to:
+sina.iravanian@gmail.com

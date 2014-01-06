@@ -1,0 +1,49 @@
+[REGIONS]
+OppHalf1 0 -34 30 34
+OppHalf2 30 -34 52.5 34
+OurHalf -52.5 -34 0 34
+[PARTITIONS]
+OurHalf
+OppHalf1
+OppHalf2
+[PLAYER1]
+[PLAYER2]
+OppHalf2 0 0.4 -15 6
+OppHalf1 0 0.4 -15 6
+OurHalf 0.8 0.4 -6 10
+[PLAYER3]
+OppHalf2 0 0.4 -10 0
+OppHalf1 0 0.4 -10 0
+OurHalf 0.8 0.4 -7 0
+[PLAYER4]
+OppHalf1 0.4 0.4 5 5
+OppHalf2 0.4 0.4 5 5
+OurHalf 0.6 0.4 -4 5
+[PLAYER5]
+OppHalf2 0 0.4 -15 -6
+OppHalf1 0 0.4 -15 -6
+OurHalf 0.8 0.4 -6 -10
+[PLAYER6]
+OppHalf1 0.4 0.4 5 -5
+OppHalf2 0.4 0.4 5 -5
+OurHalf 0.6 0.4 -4 -5
+[PLAYER7]
+OppHalf1 0.5 0.3 7 18
+OppHalf2 0.819111 0.294118 -2.00333 9
+OurHalf 0.4 0.3 -4 18
+[PLAYER8]
+OppHalf1 0.5 0.3 7 -18
+OppHalf2 0.819111 0.294118 -2.00333 -9
+OurHalf 0.4 0.3 -4 -18
+[PLAYER9]
+OppHalf1 0.6 0.3 8 0
+OppHalf2 0.6 0.3 8 0
+OurHalf 0.0899048 0.256176 6 0
+[PLAYERA]
+OppHalf1 0.8 0.3 6 13
+OppHalf2 0.8 0.3 6 13
+OurHalf 0.122476 0.313088 9.57 17.065
+[PLAYERB]
+OppHalf1 0.8 0.3 6 -13
+OppHalf2 0.8 0.3 6 -13
+OurHalf 0.122476 0.313088 9.57 -17.065

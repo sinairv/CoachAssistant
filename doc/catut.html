@@ -1,0 +1,319 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Coach Assistant 2</title>
+</head>
+
+<body>
+
+<h1 align="center">Coach Assistant 2.1<br>
+A Short Tutorial</h1>
+<p align="center">Sina Iravanian<br>
+<a href="mailto:sina_iravanian@yahoo.com">sina_iravanian@yahoo.com</a></p>
+<p>&nbsp;</p>
+
+<h2><a name="toc"></a>Table of contents</h2>
+<ol>
+	<li><a href="#intro">Introduction: What is Coach Assistant?</a></li>
+	<li><a href="#kickstart">Kick-Start</a></li>
+	<li><a href="#coeffs">What are a player's coefficients</a></li>
+	<li><a href="#defreg">Defining a Region</a></li>
+	<li><a href="#render">Rendering a Player's Region</a></li>
+	<li><a href="#manipreg">Manipulating Regions</a></li>
+	<li><a href="#partition">Partitioning the Field</a></li>
+	<li><a href="#assignpos">Assigning a Positioning to a Player</a></li>
+	<li><a href="#vispos">Visualizing a Positioning</a></li>
+	<li><a href="#modpos">Modifying a Positioning</a></li>
+	<li><a href="#clang">Generating CLang</a></li>
+	<li><a href="#futwork">Conclusion and Future Work</a></li>
+</ol>
+<hr>
+<h2><a name="intro"></a>1&nbsp;&nbsp; Introduction: What is Coach Assistant?</h2>
+<p>Coach assistant is a tool for creating positioning patterns and visualizing 
+them for a team of coachable players. It can also serve as a tool for visual 
+analysis of the players and their relative positions. It generates <i>Coach 
+Language</i> (<i>CLang</i> for short) statements for the strategy assigned to 
+the team. The generated CLang may need little modification to form a complete 
+team's strategy.</p>
+<p>In this writing, from the term <i>team</i>, it is meant a team of coachable 
+players. You may make use of Standard Coachable Players (<a href="http://rcsscoachable.sourceforge.net">RCSSCoachable</a>) 
+for this purpose. Also you need a coach to simply open the CLang file and send 
+the statements to the <a href="http://sserver.sourceforge.net">soccer server</a>.</p>
+<p>Earlier versions of Coach Assistant were Windows based applications written 
+in C++ using Borland C++Builder. The current version (2.1) is written in Java, 
+and hence is platform independent. You need Java 1.5 to compile and run the 
+application. The source code is also published under GNU General Public License.
+</p>
+<p><a href="#toc">Back to TOC</a></p>
+<hr>
+<h2><a name="kickstart"></a>2&nbsp;&nbsp; Kick-Start</h2>
+<p>In this section you can take a quick guide to grasp the whole idea of what 
+the functionalities of Coach Assistant are. Follow the steps:</p>
+<p><b>Run Coach Assistant.</b> Go to the <i>bin</i> folder and run <i>run.sh</i> 
+or <i>run.bat</i>. You must see a window with a football field in the middle. On 
+top of the field there are the players of the right side and left side teams. 
+Each side has the players 1 through 11 and an extra <i>X</i> player. Let's call 
+the left side team, <i>our team</i>, and the right side team, <i>opp team </i>
+(short for opponent team). Besides their intuitive meanings, <i>our</i> and <i>
+opp</i> are valid CLang identifiers. You can drag any players to any positions. 
+In this current version this is <i>only</i> for visualizing purposes, and does 
+not affect the strategy of the team. You can see later that you can define 
+positioning for <i>our</i> players 1 through 11. <i>Our</i> player <i>X</i>, and 
+all the <i>opp</i> players cannot be assigned any positioning, and hence no 
+CLang is generated for them. </p>
+<p><b>Open a sample strategy.</b> Press open button on the toolbar, and go to 
+the <i>samples</i> folder, and select <i>sample352.cas</i>. Now toggle the <i>
+Move the Ball</i> button on the toolbar; the one with the following icon:</p>
+<p><img border="0" src="catut_moveball.png" width="20" height="22"></p>
+<p>While having this button selected, move the mouse inside the field, and see 
+the players positioning accordingly. In this case the mouse pointer plays the 
+role of the ball and the players are showing their relative positioning 
+regarding the ball.</p>
+<p><b>Generate CLang for this strategy.</b> Press the <i>Export CLang</i> 
+button; the one with the following icon:</p>
+<p><img border="0" src="catut_export.png" width="16" height="16"></p>
+<p>Leave the default settings unchanged and press <i>Generate</i>. Choose a file 
+name for the generated CLang file. It's now time to test if the generated CLang 
+file is doing what you expect it to do.</p>
+<p><a href="#toc">Back to TOC</a></p>
+<hr>
+<h2><a name="coeffs"></a>3&nbsp;&nbsp; What are a player's coefficients</h2>
+<p>To go to the concept of the player's coefficients, first open <i>coefs1.cas</i> 
+from the <i>samples</i> folder. Right click on <i>our 1</i> player, and select
+<i>SomeRegion</i> from the context menu. Now you must see two rectangles on the 
+field. Toggle the <i>Move the Ball</i> button and move the mouse pointer inside 
+the blue rectangle. As you see player <i>our 1</i> positions in such a way that 
+as if there is a one-to-one map from the points inside the blue rectangle to the 
+points inside the red rectangle. This map is created by performing some 
+arithmetic on the ball's coordination. The CLang counterpart of such arithmetic 
+is shown in the second element of the status-bar which reads:</p>
+<pre>(((pt ball) * (pt 1.34 0.57)) + (pt 46.84 0.0))</pre>
+<p>This is interpreted as to form such a map <i>if the ball is inside the blue 
+region</i> then the map is created by multiplying the ball's coordination in the 
+first ordered pair of numbers (in this case <font face="Courier New" size="2">
+(pt 1.34 0.57)</font><font face="Times New Roman">)&nbsp; and adding the result 
+points to the second pair of numbers (in this case </font>
+<font face="Courier New" size="2">(pt 46.84 0.0)</font><font size="2" face="Times New Roman">
+</font><font face="Times New Roman">). In other references the first ordered 
+pair is referred to as the player's <i>attraction</i> to the ball. In this 
+application and tutorial we refer to the 4 numbers as the player's coefficients.</font></p>
+<p><font face="Times New Roman">See <i>coefs2.cas</i> for an example of a 
+horizontal positioning, and <i>coefs3.cas</i> as an example of vertical 
+positioning. In both samples, repeat the steps of this sections for player <i>
+our 1</i> again. Line positioning is useful when you do not want a player to 
+move much in order to keep its stamina.</font></p>
+<p><a href="#toc">Back to TOC</a></p>
+<hr>
+<h2><a name="defreg"></a>4&nbsp;&nbsp; Defining a Region</h2>
+<p>There exists two types of regions in this application: <i>Ball Region</i>, 
+and <i>Player Region</i>. By region we mean a rectangle. Ball Region is drawn in 
+blue, and Player Region is drawn in red by convention. There are two ways to 
+define a region: drawing it by mouse, or specifying it by its coordination. </p>
+<p><b>Draw a region. </b>Let's draw a ball region. Toggle the <i>Draw Ball 
+Region</i> button; the one with the following icon:</p>
+<p><img border="0" src="catut_drball.png" width="16" height="16"></p>
+<p>Drag the mouse pointer on the field to form a ball region.</p>
+<p><b>Specify a region by coordination.</b> Press the <i>Specify Ball Region</i> 
+button; the one with the following icon:</p>
+<p><img border="0" src="catut_spball.png" width="16" height="16"></p>
+<p>If you have already drawn (or specified) a ball region, the text fields are 
+initialized with the coordination of that region. Modify the contents, or 
+specify new coordination yourself. Press OK to see the region.</p>
+<p>In either cases, if you want to save the ball region with a name to be 
+referred later, press again the <i>Specify Ball Region</i> button; check the <i>
+Save as</i> check-box and specify a name for it.</p>
+<p>To load an already saved region, press <i>Specify Ball Region</i> button; 
+select the <i>Load</i> radio button; and select your region from the list.</p>
+<p>The whole process also applies for the player region, with the difference 
+that a player region is drawn in red by convention.</p>
+<p>Whenever there's one ball region, and one player region present, the map from 
+the ball region to the player region is shown in status bar. If you intend to 
+use the application for analysis purposes only, you can right-click on status 
+bar and copy the relation to the clipboard.</p>
+<p>Only one ball region can be shown at each time. Only one player region can be 
+shown at each time too.</p>
+<p><a href="#toc">Back to TOC</a></p>
+<hr>
+<h2><a name="render"></a>5&nbsp;&nbsp; Rendering a Player's Region</h2>
+<p dir="ltr">Sometimes you have a map (more specifically a player's 
+coefficients) and want to know what would be the player's region. This normally 
+happens when you are reading CLang statements which are written by somebody 
+other than you. To render a player's coefficients you need the ball's region 
+(the domain of the map) and the coefficients. To do so, press the <i>Specify 
+Ball and Player Region</i> button; the one with the following icon:</p>
+<p dir="ltr">
+<img border="0" src="catut_spballplayer.png" width="16" height="16"></p>
+<p dir="ltr">The text-fields related to the ball region, are initialized with 
+the currently specified ball region coordination. You can modify the contents, 
+specify them yourself, or load an existing region. The coefficients and their 
+syntax are shown in the dialog. Here <i>C</i> stands for coefficient (the value 
+which is going to be multiplied) and <i>O</i> stands for offset (the value which 
+is going to be added). The text-fields for these four values are also 
+initialized with the relation between the currently specified ball and player 
+regions.</p>
+<p><a href="#toc">Back to TOC</a></p>
+<hr>
+<h2><a name="manipreg"></a>6&nbsp;&nbsp; Manipulating Regions</h2>
+<p>In this section we briefly introduce easy ways/tricks to change regions' 
+coordination.</p>
+<p><b>Change the coordination of a region's corner. </b>Press specify region, 
+and modify the corner's coefficients.</p>
+<p><b>Move a player's region some meters horizontally. </b>Open render formula 
+dialog. Add the value of <i>O1</i> with the desired distance.</p>
+<p><b>Move a player's region some meters vertically. </b>Open render formula 
+dialog. Add the value of <i>O2</i> with the desired distance.</p>
+<p><b>Make a player's region horizontally wider/narrower. </b>Open render 
+formula dialog. Increase/decrease the value of <i>C1.</i></p>
+<p><b>Make a player's region vertically wider/narrower. </b>Open render formula 
+dialog. Increase/decrease the value of <i>C2.</i></p>
+<p><a href="#toc">Back to TOC</a></p>
+<hr>
+<h2><a name="partition"></a>7&nbsp;&nbsp; Partitioning the Field</h2>
+<p>It is probably obvious for you that if there exists some points in the field, 
+for which a player has no positioning assigned to, that player does not move if 
+the ball enters those areas. In order to create a complete positioning as seen 
+in <i>Sample352.cas</i> one needs to cover all the field. </p>
+<p dir="ltr">If you want to use a region as a ball region to define positionings 
+for, that region must be a partition. To declare a ball region, as a partition. 
+Do the following steps.</p>
+<p dir="ltr"><b>Specify your <i>ball</i> region. </b>Either by drawing or 
+specifying it by coordination. See Section <a href="#defreg">4</a> for more 
+details.</p>
+<p dir="ltr"><b>Assign a name for your region.</b> Open the <i>Specify Ball 
+Region</i> dialog; Select <i>Save as</i>, and specify a name for it.</p>
+<p dir="ltr"><b>Add your region to the set of partitions.</b> Press the <i>View 
+Partitions</i> button; the one with the following icon:</p>
+<p dir="ltr"><img border="0" src="catut_partitions.png" width="16" height="16"></p>
+<p dir="ltr">In this dialog, you can see all the regions saved so far, and a 
+list of partitions. If this list is empty, it means that you have created no 
+partitions at all. Also at the far left side of the dialog, you can see a handy 
+way of creating and saving new regions fast. To add a region to the list of 
+partitions, first select the regions from the list entitled <i>All the Regions</i>. 
+Having selected them press the button with caption <i>&gt;</i> to add the selected 
+regions to the list of partitions. To remove some regions from the list of 
+partitions, simply select them in the list of <i>Partitions</i>, and press the 
+button with caption <i>&lt;</i>.</p>
+<p dir="ltr">It is not necessary for the partitions to not overlap. Also it is 
+not necessary for the union of the partitions to cover the whole field. If a 
+certain player has been assigned positioning in two overlapping partitions, then 
+the behavior of the player in the overlapped area is undefined.</p>
+<p dir="ltr">Referring to <i>Sample352.cas</i> again, the field is partitioned 
+simply into two regions called <i>OurHalf</i>, and <i>OppHalf</i>. The union of 
+the two is the whole field. But in Sample <i>coefs1.cas</i> there is only one 
+partition which does not cover the field.</p>
+<p><a href="#toc">Back to TOC</a></p>
+<hr>
+<h2><a name="assignpos"></a>8&nbsp;&nbsp; Assigning a Positioning to a Player</h2>
+<p dir="ltr">Having defined partitions, it is now time to assign positioning of 
+the players when the ball enters any of the partitions. You can view any of the 
+partitions names, by right clicking on any of <i>our</i> players 1 through 11, 
+and selecting one by name. Now it's time to define your desired player 
+positioning for this partition. Draw a player region either by specifying its 
+coordination, or drawing it, as described in section <a href="#defreg">4</a>. 
+Now there are two ways to assign what you have drawn to a specific player to 
+position accordingly:</p>
+<p dir="ltr"><b>1.</b> Right click on your player of choice, and select, <i>Set 
+Specified Region</i>. To test if it had worked toggle <i>Move the Ball</i>, and 
+see the result.</p>
+<p dir="ltr"><b>2.</b> Right click on the second element of the status bar where 
+the coefficients of this positioning is written. Select <i>Set For</i>, and 
+choose the player from the sub-menu. Again toggle <i>Move the Ball</i> to test 
+if it had worked.</p>
+<p dir="ltr">To form a complete strategy, one needs to assign positioning for 
+each of the players in each of the partitions. That would add up to the number 
+of partitions times the number of players, player regions. Referring to <i>
+Sample353.cas</i> it defines positioning for players 2 through 11, in two 
+partitions, which will be a total 20 player regions. (Player 1 is left out, 
+because Standard Coachable Players provide default positioning for the goalie. 
+Anyway if one needs to customize positioning of the goalie, he/she must define 
+positioning for the goalie too.) </p>
+<p><a href="#toc">Back to TOC</a></p>
+<hr>
+<h2><a name="vispos"></a>9&nbsp;&nbsp; Visualizing a Positioning</h2>
+<p>If you want to speculate, how a certain player positions in different 
+partitions, right click on the player, and select the partitions, one by one. 
+The blue region, is the ball region (or the partition itself) and the red region 
+is the player's assigned region to position. If there is no region specified for 
+a partition, then there will be no red region drawn on the field. You can test 
+this section using <i>Sample352.cas</i>.</p>
+<p><a href="#toc">Back to TOC</a></p>
+<hr>
+<h2><a name="modpos"></a>10&nbsp;&nbsp; Modifying a Positioning </h2>
+<p>To change an existing positioning assigned to a player, you must define a new 
+player region, and assign it <i>again</i> to the player. To modify an existing 
+ball region you may find it useful to see section <a href="#manipreg">6</a>. 
+First visualize the existing region, by right clicking on the player, and 
+selecting the partition name, from the context menu. After you have created the 
+new region, it is not assigned to the player unless you do it explicitly. For 
+this purpose, either right click on the player and select <i>Set Specified 
+Region</i>, or right click on the second element of the status-bar, and select
+<i>Set For</i>, and specify the player's number from the sub-menu. Toggle <i>
+Move the Ball</i> and move the mouse pointer on the ball region to make sure 
+that the new region is assigned to the player.</p>
+<p><a href="#toc">Back to TOC</a></p>
+<hr>
+<h2><a name="clang"></a>11&nbsp;&nbsp; Generating CLang</h2>
+<p>To generate CLang statements of the strategy currently open, press the <i>
+Export CLang</i> button; the one with the following icon:</p>
+<p><img border="0" src="catut_export.png" width="16" height="16"></p>
+<p>Here it comes a description for each option:</p>
+<p><b>Prefix.</b> Prefix is the user's defined rule name prefix. In the 
+generated CLang the positioning rule names are by default made up of the term <i>
+RULE</i> plus the region name (i.e. partition name) plus the player's uniform 
+number. One can specify a prefix to be placed between<i> RULE</i> and the region 
+name.<i> </i></p>
+<p><b>Positioning Radius.</b> By defining a positioning radius, the players do 
+not have to position to an exact point, but they position into a circle around 
+the point with a certain radius. The circle's radius is referred to as the 
+player's <i>Positioning Radius</i>. While using Standard Coachable Players it is 
+not needed to make use of positioning radius. </p>
+<p><b>Generate Shooting Capabilities.</b> Generates a set of rules which enables 
+a player who is close enough to the opponent goal to shoot the ball rather than 
+passing it to another teammate.</p>
+<p><b>Add play-mode play-on Condition.</b> Sets (or <i>and</i>s if not empty) 
+the conditions of generated positioning rules with
+<font face="Courier New" size="2">(playm play_on)</font> condition.</p>
+<p><b>Add Custom Condition.</b> <i>And</i>s the conditions of the generated 
+positioning rules, with the user provided condition. The syntax of the condition 
+must be checked by the user himself/herself. Obviously, to obey the syntax of 
+CLang the condition must be enclosed in parentheses. </p>
+<p><b>Freedom Radius Condition.</b> As an example consider that the user has 
+specified a Freedom Radius of 2.0 meters. It means that if the distance of the 
+player from the ball is more than 2.0 meters they follow the positioning rule, 
+otherwise the positioning rule does not fire (it might be more wise for the 
+player to intercept the ball rather than position to some other point). The user 
+can later add some hand coded rules, for his/her desired behavior for such 
+cases. While using Standard Coachable Players, the closest player to the ball 
+intercepts the ball by default, and hence there is no need to specify Freedom 
+Radius, unless the user intends some other behaviors. </p>
+<p><a href="#toc">Back to TOC</a></p>
+<hr>
+<h2><a name="futwork"></a>12&nbsp;&nbsp; Conclusion and Future Work</h2>
+<p>Initially earlier versions of Coach Assistant were created for some research 
+about recognizing patterns of positioning of the players of a team and 
+describing them in CLang. During RoboCup 2005 Coach Competitions (held in Osaka, 
+Japan) all the positioning and overall behavior of the patterns were generated 
+using Coach Assistant. Also in RoboCup 2006 Coach Competitions (held in Bremen, 
+Germany) all the <i>100%</i>&nbsp; of the overall behaviors of the participants' 
+submitted patterns, were based upon the patterns which were created using the 
+same software.</p>
+<p>For the coming Coach Competitions, there is an argument on how to 
+create/generate realistic patterns. Unfortunately currently this software is by 
+no means an <i>automatic</i> pattern creation tool. But it can help speeding up 
+creating patterns, and through its visual environment helps creating reasonable 
+realistic behaviors. Minor modifications might be needed to make different 
+patterns out of a certain base strategy. </p>
+<p>Coach Assistant can be extended to visually design other behaviors rather 
+than positioning (behaviors such as, passing, dribbling, or some other composite 
+actions). Also it might serve as the base for the tool officially used for 
+creating patterns. Also it can be extended to an automatic pattern creation 
+tool.</p>
+<p><a href="#toc">Back to TOC</a></p>
+<hr>
+<p align="right">Last updated on October 23, 2006</p>
+
+</body>
+
+</html>
